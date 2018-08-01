@@ -58,7 +58,7 @@ for numStates = minStates:maxStates
         state1 =find(hmmmodel.gammank(i,:) == max(hmmmodel.gammank(i,:)));
         if length(state1)>1
             stateseq(i)=state1(1);
-            disp('degnerate');
+            disp('degenerate');
         else
             stateseq(i)=state1;
         end
@@ -83,13 +83,13 @@ for numStates = minStates:maxStates
     disp(transmat);
     %calculate logL here after HMM
     [gamma,logL] = Expectation(deltaX,bestVacf,PF,trackInfo);
-    newlogL = Expectation_v(deltaX,bestVacf,PF,trackInfo,stateseq,transmat);
+    newlogL = Expectation_v3(deltaX,bestVacf,PF,trackInfo,stateseq,transmat);
     
     % calculate BIC
     nparams = (numStates+1)*(numStates - 1) + numStates*trackInfo.numFeatures; % allows for HMM transition rates
     BIC = newlogL - nparams/2*log(numData);
     AccBIC=[AccBIC BIC];
-        disp(['old log L: ' num2str(logL)]);
+    disp(['old log L: ' num2str(logL)]);
     disp(['new log L and BIC: ' num2str(newlogL) '  and ' num2str(BIC)]);
     
     %     if BIC(numStates) < max(BIC(1:numStates)) %Since BIC is now negative with HMM,
