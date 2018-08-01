@@ -50,7 +50,7 @@ for numStates = minStates:maxStates
     hmmparams.maxiter = 500;
     hmmparams.tolerance = 1e-3;
     hmmparams.verbose = 1;
-    hmmmodel = HMMGMM_v4(deltaX, trackInfo, hmmparams);
+    hmmmodel = HMMGMM_v3(deltaX, trackInfo, hmmparams);
     disp(baseP);
     %calculate the state sequence %gamma is the posterior prob, mark the seq by choosing the higher prob
     stateseq = zeros(length(deltaX),1);
