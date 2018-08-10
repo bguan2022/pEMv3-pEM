@@ -64,15 +64,7 @@ for numStates = minStates:maxStates
         end
         %if found two states of the same prob, pick the first one.
     end
-    PF=[];
-    est_stateSeq=stateseq;
-    l=length(est_stateSeq);
-    for k=1:numStates
-        pk=sum(est_stateSeq(:) == k)/l;
-        PF=[PF pk];
-    end
-    disp(PF);
-    
+
     HMMlogLmax = hmmmodel.logL;
     bestVacf = hmmmodel.vacf;
     bestP = hmmmodel.PF;
@@ -82,8 +74,8 @@ for numStates = minStates:maxStates
     disp(bestP);
     disp(transmat);
     %calculate logL here after HMM
-    [gamma,logL] = Expectation(deltaX,bestVacf,PF,trackInfo);
-    newlogL = Expectation_v3(deltaX,bestVacf,PF,trackInfo,stateseq,transmat);
+    [gamma,logL] = Expectation(deltaX,bestVacf,bestP,trackInfo);
+    newlogL = Expectation_v3(deltaX,bestVacf,bestP,trackInfo,stateseq,transmat);
     
     % calculate BIC
     nparams = (numStates+1)*(numStates - 1) + numStates*trackInfo.numFeatures; % allows for HMM transition rates
@@ -103,7 +95,6 @@ for numStates = minStates:maxStates
     state(numStates).logL = logL;
     state(numStates).vacf = bestVacf;
     state(numStates).bestP = bestP;
-    state(numStates).PF = PF;
     state(numStates).posteriorProb = postProb;
     state(numStates).transmat = transmat;
     state(numStates).stateseq = stateseq;
@@ -121,7 +112,7 @@ results.state=state;
 results.trackInfo = trackInfo;
 results.optimalSize = numStates;
 results.optimalVacf = state(numStates).vacf;
-results.optimalPF = state(numStates).PF;
+results.optimalPF = state(numStates).bestP;
 results.stateseq = state(numStates).stateseq;
 
 
